@@ -1,6 +1,6 @@
 # 05. Ansible start
 
-### Create host file
+### Create host file:
 ```bash
 [jump]
  bastion ansible_host=178.124.206.53
@@ -18,6 +18,24 @@
  host4 ansible_host=192.168.203.40
 ```
 [hosts](./hosts)
+
+### Create ssh config file:
+```bash
+###############################
+ # EC HTP
+ ###################################
+ # EC HTP
+ Host ec_bastion
+         User jump_sa
+         HostName 178.124.206.53
+ Host  192.168.203.37 192.168.203.38 192.168.203.39 192.168.203.40
+         ProxyJump ec_bastion
+```
+[ssh config](./config)
+
+### Edit ansible config file:
+
+[ansible.cfg](./ansible.cfg)
 
 
 ### Check [ec] hosts:
@@ -63,13 +81,13 @@ ansible -u root ec -m shell -a 'hostname -A && hostname -I'
 [hostnames/ip](./host_names_ip)
 
 ### Upgrade packages
-#### For ubuntu servers use command:
+#### For Ubuntu servers use command:
 ```bash
 ansible ec_ubuntu -u ansibleusr -m shell -a "sudo yum -y upgrate"
 ```
 [ec_ubuntu output](./ec_ubunu_upgrade)
 
-#### For centos servers use command:
+#### For Centos servers use command:
 ```bash
 ansible ec_centos -u ansibleusr -m shell -a "sudo yum -y update"
 ```
