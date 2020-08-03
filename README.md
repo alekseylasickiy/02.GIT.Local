@@ -1,13 +1,30 @@
 # 05. Ansible start
 
 ### Create host file
+```bash
+[jump]
+ bastion ansible_host=178.124.206.53
+ 
+ [ec:children]
+ ec_centos
+ ec_ubuntu
+ 
+ [ec_centos]
+ host1 ansible_host=192.168.203.37
+ host3 ansible_host=192.168.203.39
+ 
+ [ec_ubuntu]
+ host2 ansible_host=192.168.203.38
+ host4 ansible_host=192.168.203.40
+```
 [hosts](./hosts)
 
-### Check ec hosts:
+
+### Check [ec] hosts:
 ```bash
 ansible -m ping ec -u root
 ```
-### Output
+#### Output:
 ```bash
 host3 | SUCCESS => {
     "ansible_facts": {
@@ -38,3 +55,23 @@ host4 | SUCCESS => {
     "ping": "pong"
 }
 ```
+
+### Print out host names and IP
+```bash
+ansible -u root ec -m shell -a 'hostname -A && hostname -I'
+```
+[hostnames/ip](./host_names_ip)
+
+### Upgrade packages
+#### For ubuntu servers use command:
+```bash
+ansible ec_ubuntu -u ansibleusr -m shell -a "sudo yum -y upgrate"
+```
+[ec_ubuntu output](./ec_ubunu_upgrade)
+
+#### For centos servers use command:
+```bash
+ansible ec_centos -u ansibleusr -m shell -a "sudo yum -y update"
+```
+[ec_centos output](./ec_centos_upgrade)
+
